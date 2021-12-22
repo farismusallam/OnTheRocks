@@ -104,7 +104,6 @@ const H1 = styled.h1`
   font-size: 70px;
   font-weight: bold;
   right: 15px;
-  text-decoration: underline;
 `;
 
 const Container = styled.div`
