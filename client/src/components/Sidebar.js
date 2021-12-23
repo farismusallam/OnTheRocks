@@ -6,23 +6,30 @@ const Sidebar = () => {
   return (
     <Wrapper>
       <Container>
-        <Link to="/search-user">Search Users</Link>
+        <StyledLink to="/search-user">Search Users</StyledLink>
       </Container>
       <Container>
-        <Link to="/search-name">Search Drinks By Name</Link>
+        <StyledLink to="/search-name">Search Drinks By Name</StyledLink>
       </Container>
       <Container>
-        <Link to="/search-letter">Search Drinks By Letter</Link>
+        <StyledLink to="/search-letter">Search Drinks By Letter</StyledLink>
       </Container>
       <Container>
-        <Link to="/search-category">Search Drinks By Category</Link>
+        <StyledLink to="/search-category">Search Drinks By Category</StyledLink>
       </Container>
       <Container>
-        <Link to="/search-ingredients">Search Drinks By Ingredients</Link>
+        <StyledLink to="/search-ingredients">
+          Search Drinks By Ingredients
+        </StyledLink>
       </Container>
     </Wrapper>
   );
 };
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: var(--color-almond);
+`;
 
 const Wrapper = styled.div`
   display: flex;
