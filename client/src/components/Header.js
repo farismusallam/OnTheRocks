@@ -7,6 +7,7 @@ import LoginButton from "./LoginButton";
 import LogoutButton from "./LogoutButton";
 import whiskeylogo from "../assets/whiskeylogo.png";
 import barbackground from "../assets/barbackground.jpg";
+import { MdPerson } from "react-icons/md";
 
 const Header = () => {
   const { user, isAuthenticated } = useAuth0();
@@ -39,8 +40,8 @@ const Header = () => {
               </Container>
               <Container>
                 <StyledLink to={`/profile/${user.sub}`}>
-                  <span></span>
-                  <Span>Profile</Span>
+                  <MdPerson style={{ color: "var(--color-almond)" }} />
+                  <Span>{`Welcome ${user.nickname}!`}</Span>
                 </StyledLink>
               </Container>
             </SideWrap>

@@ -5,6 +5,7 @@ import Favorites from "./Favorites";
 import FriendsList from "./FriendsList";
 import CreatedDrinks from "./CreatedDrinks";
 import { useParams } from "react-router-dom";
+import { MdPersonAdd, MdPersonRemove } from "react-icons/md";
 
 const Profile = ({ currentUser, status, setStatus }) => {
   const { id } = useParams();
@@ -94,10 +95,16 @@ const Profile = ({ currentUser, status, setStatus }) => {
           <>
             <div>
               {currentUser._id !== id && isFollowing === false ? (
-                <button onClick={handleFollow}>Follow</button>
+                <button onClick={handleFollow}>
+                  <MdPersonAdd style={{ color: "var(--color-almond)" }} />
+                  Follow
+                </button>
               ) : null}
               {currentUser._id !== id && isFollowing === true ? (
-                <button onClick={handleRemove}>Unfollow</button>
+                <button onClick={handleRemove}>
+                  <MdPersonRemove style={{ color: "var(--color-almond)" }} />
+                  Unfollow
+                </button>
               ) : null}
             </div>
             <div>

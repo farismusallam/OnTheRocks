@@ -30,7 +30,7 @@ const SearchResults = () => {
             <Pagination
               data={drinks}
               RenderComponent={Results}
-              dataLimit={25}
+              dataLimit={10}
             />
           )}
           {drinks === null && <div>Results Not Found</div>}

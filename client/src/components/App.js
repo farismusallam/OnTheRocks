@@ -129,6 +129,7 @@ const App = () => {
 const Wrapper = styled.div`
   display: flex;
   background-color: var(--color-black);
+  height: 100%;
 `;
 
 export default App;

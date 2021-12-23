@@ -20,24 +20,28 @@ const SearchUser = () => {
 
   return (
     <>
-      <form>
-        <Search>
-          <Input
-            placeholder="Search users by nickname..."
-            onChange={handleChange}
-          />
-          <Searchbutton onClick={handleClick}>Search</Searchbutton>
-        </Search>
-      </form>
+      <Wrapper>
+        <Form>
+          <Search>
+            <Input
+              placeholder="Search users by nickname..."
+              onChange={handleChange}
+            />
+            <Searchbutton onClick={handleClick}>Search</Searchbutton>
+          </Search>
+        </Form>
+      </Wrapper>
     </>
   );
 };
 
+const Form = styled.form``;
+
 const Search = styled.div`
   width: 500px;
   display: flex;
-
-  justify-content: space-between;
+  justify-content: center;
+  margin-top: 20px;
 `;
 const Input = styled.input`
   width: 80%;
@@ -45,25 +49,39 @@ const Input = styled.input`
   padding: 10px;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
-  border: 1px solid #d1d1d1;
-  text-transform: capitalize;
+  border-top: 1px solid var(--color-grey);
+  border-left: 1px solid var(--color-grey);
+  border-bottom: 1px solid var(--color-grey);
+  border-right: none;
   background: none;
-  color: #a9a9a9;
+  color: var(--color-grey);
   outline: none;
 `;
 const Searchbutton = styled.button`
   width: 20%;
-  height: 40px;
+  height: 42px;
   padding: 10px 20px;
   border: none;
   outline: none;
   cursor: pointer;
-  background: #383838;
-  color: #fff;
-  text-transform: capitalize;
+  background: var(--color-black);
+  border: 1px solid var(--color-almond);
+  color: var(--color-almond);
   font-size: 15px;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
+
+  &:hover {
+    background: var(--color-almond);
+    color: var(--color-black);
+  }
+`;
+
+const Wrapper = styled.div`
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 `;
 
 export default SearchUser;
