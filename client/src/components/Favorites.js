@@ -7,6 +7,7 @@ import Results from "./Results";
 const Favorites = ({ collections }) => {
   return (
     <Wrapper>
+      <span style={{ textDecoration: "underline" }}>Your Favorite Drinks:</span>
       <PageWrapper>
         <Pagination
           data={collections}
@@ -22,7 +23,8 @@ const Wrapper = styled.div`
   width: 100%;
   height: 500px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   background: var(--color-black);
 `;
 

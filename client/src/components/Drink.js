@@ -330,7 +330,12 @@ const Drink = ({ currentUser }) => {
                         }
                       />
                     </Label>
-                    <Button onClick={handleClick}>Rate!</Button>
+                    <Button
+                      onClick={handleClick}
+                      disabled={selectedRating === null ? true : false}
+                    >
+                      Rate!
+                    </Button>
                   </Form>
                 </DetailDiv>
               )}
