@@ -11,6 +11,7 @@ export default createGlobalStyle`
 body {
     margin: 0px 100px;
     padding: 0;
-    color: var(--color-almond)
+    color: var(--color-almond);
+    font-family: 'Open Sans', sans-serif;
   }
 `;

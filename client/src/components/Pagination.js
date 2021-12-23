@@ -4,20 +4,16 @@ import styled from "styled-components";
 const Pagination = ({ data, RenderComponent, dataLimit }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
-  //nuber of pages (25 items per page) based on length of array//
   const pages = Math.round(data.length / dataLimit);
 
-  //function to go to next page//
   function goToNextPage() {
     setCurrentPage((page) => page + 1);
   }
 
-  //function to go to previous page//
   function goToPreviousPage() {
     setCurrentPage((page) => page - 1);
   }
 
-  //function to slice data (25 per page)//
   const getPaginatedData = () => {
     const startIndex = currentPage * dataLimit - dataLimit;
     const endIndex = startIndex + dataLimit;
@@ -26,20 +22,19 @@ const Pagination = ({ data, RenderComponent, dataLimit }) => {
   };
 
   return (
-    <div>
+    <Wrapper>
       <ButtonWrapper>
-        {/* previous button */}
         <Button
           onClick={goToPreviousPage}
           disabled={currentPage === 1 ? true : false}
         >
           Previous Page
         </Button>
-        {/* page number */}
+
         <Container>
           <span>{`${currentPage}`}</span>
         </Container>
-        {/* next Button */}
+
         <Button
           onClick={goToNextPage}
           disabled={currentPage === pages || pages === 0 ? true : false}
@@ -47,11 +42,18 @@ const Pagination = ({ data, RenderComponent, dataLimit }) => {
           Next Page
         </Button>
       </ButtonWrapper>
-      {/* show the items, 25 items at a time */}
+
       <GridWrapper>{<RenderComponent data={getPaginatedData()} />}</GridWrapper>
-    </div>
+    </Wrapper>
   );
 };
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+`;
 
 const Container = styled.div`
   display: flex;
@@ -60,10 +62,9 @@ const Container = styled.div`
   border-radius: 50%;
   width: 30px;
   height: 30px;
-  border: 3px solid #383838;
-  color: #383838;
+  border: 3px solid var(--color-almond);
+  color: var(--color-almond);
   font-size: 18px;
-  font-family: "roboto", sans-serif;
   font-weight: bold;
 `;
 
@@ -83,18 +84,26 @@ const Button = styled.button`
   align-items: center;
   justify-content: center;
   border-radius: 25px;
-  padding: 10px 10px;
-  background: #383838;
-  border: none;
-  color: white;
+  padding: 0px 10px;
+  background: var(--color-black);
+  border: 3px solid var(--color-almond);
+  color: var(--color-almond);
   font-size: 15px;
   cursor: pointer;
   width: 225px;
+  margin-left: 30px;
+  margin-right: 30px;
 
   &:disabled {
     opacity: 0.5;
     background-color: grey;
     cursor: default;
+    border: none;
+  }
+
+  &:hover {
+    background: var(--color-almond);
+    color: var(--color-black);
   }
 `;
 

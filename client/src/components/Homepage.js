@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
+import { RadialProgress } from "react-radial-progress-indicator";
 
 const Homepage = ({ users }) => {
-  const { user, isAuthenticated } = useAuth0();
   const [status, setStatus] = useState("idle");
   const [drinks, setDrinks] = useState([]);
 
@@ -19,7 +18,32 @@ const Homepage = ({ users }) => {
   }, []);
 
   if (status === "loading") {
-    return <div>LOADING</div>;
+    return (
+      <Wrapper>
+        <LoadingDiv>
+          <RadialProgress
+            backgroundColour="#3b3a41"
+            backgroundTransparent
+            duration={10000}
+            fontRatio={4}
+            height={200}
+            ringBgColour="#B56576"
+            ringFgColour="#F5E0B7"
+            ringIntermediateColour="#8B807B"
+            ringThickness={0.2}
+            segmented={false}
+            showIntermediateProgress
+            startStep={0}
+            step={10}
+            steps={10}
+            text={function text(steps, proportion) {
+              return "".concat(Math.floor(100 * proportion), "%");
+            }}
+            width={100}
+          />
+        </LoadingDiv>
+      </Wrapper>
+    );
   }
 
   return (
@@ -29,7 +53,7 @@ const Homepage = ({ users }) => {
         <Grid>
           {drinks.map((drink) => {
             return (
-              <StyledLink to={`/${drink.idDrink}`}>
+              <StyledLink to={`/${drink.idDrink}`} key={drink.idDrink}>
                 <DrinkBox>
                   <Image alt={drink.strDrink} src={drink.strDrinkThumb} />
                   <TextBox>
@@ -45,7 +69,10 @@ const Homepage = ({ users }) => {
         <Grid>
           {users.map((singleuser) => {
             return (
-              <StyledLink to={`/profile/${singleuser._id}`}>
+              <StyledLink
+                to={`/profile/${singleuser._id}`}
+                key={singleuser._id}
+              >
                 <DrinkBox>
                   <Image alt={singleuser.nickname} src={singleuser.picture} />
                   <TextBox>
@@ -60,6 +87,12 @@ const Homepage = ({ users }) => {
     </Wrapper>
   );
 };
+
+const LoadingDiv = styled.div`
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+`;
 
 const Line = styled.div`
   display: block;

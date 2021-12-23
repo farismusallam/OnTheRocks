@@ -2,9 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
-
-import Pagination from "./Pagination";
-import Results from "./Results";
+import { RadialProgress } from "react-radial-progress-indicator";
 
 const SearchUserResults = () => {
   const [userResults, setUserResults] = useState(null);
@@ -21,19 +19,40 @@ const SearchUserResults = () => {
       });
   }, []);
 
-  if (userResults === null) {
-    return <div>LOADING</div>;
-  }
-
   if (userResults === "Not Found") {
-    return <div>Results Not Found</div>;
+    return (
+      <Wrapper>
+        <Div>Results Not Found</Div>
+      </Wrapper>
+    );
   }
 
   return (
     <>
       <Wrapper>
-        {status === "loading" ? (
-          <LoadingDiv>LOADING...</LoadingDiv>
+        {status === "loading" || userResults === null ? (
+          <LoadingDiv>
+            <RadialProgress
+              backgroundColour="#3b3a41"
+              backgroundTransparent
+              duration={10000}
+              fontRatio={4}
+              height={200}
+              ringBgColour="#B56576"
+              ringFgColour="#F5E0B7"
+              ringIntermediateColour="#8B807B"
+              ringThickness={0.2}
+              segmented={false}
+              showIntermediateProgress
+              startStep={0}
+              step={10}
+              steps={10}
+              text={function text(steps, proportion) {
+                return "".concat(Math.floor(100 * proportion), "%");
+              }}
+              width={100}
+            />
+          </LoadingDiv>
         ) : (
           <Div>
             <Span>Found user:</Span>
@@ -56,29 +75,15 @@ const LoadingDiv = styled.div`
   height: 100vh;
 `;
 
-const Line = styled.div`
-  display: block;
-  height: 1px;
-  border: 0;
-  border-top: 2px solid var(--color-grey);
-  margin: 1em 0;
-  padding: 0;
-`;
-
 const Div = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   margin-top: 20px;
 `;
 
 const StyledLink = styled(Link)`
   text-decoration: none;
-`;
-
-const Grid = styled.div`
-  display: inline-grid;
-  grid-template-columns: repeat(5, 1fr);
-  margin-top: 30px;
 `;
 
 const TextBox = styled.div`

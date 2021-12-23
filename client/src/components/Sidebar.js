@@ -51,7 +51,7 @@ const Wrapper = styled.div`
   width: 30%;
   border-right: 3px solid var(--color-grey);
   font-weight: bold;
-  background-color: var(--color-brown);
+  background-color: var(--color-black);
   height: auto;
   padding-top: 20px;
 `;
@@ -60,6 +60,7 @@ const Container = styled.div`
   display: flex;
   margin-left: 20px;
   margin-bottom: 10px;
+  align-items: center;
 `;
 
 export default Sidebar;

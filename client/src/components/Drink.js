@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
+import { RadialProgress } from "react-radial-progress-indicator";
+import { BiDrink } from "react-icons/bi";
 
 const Drink = ({ currentUser }) => {
-  const { user, isAuthenticated, isLoading } = useAuth0();
+  const { user, isAuthenticated } = useAuth0();
   const id = useParams();
   const [status, setStatus] = useState("idle");
   const [drink, setDrink] = useState(null);
@@ -114,13 +116,33 @@ const Drink = ({ currentUser }) => {
     addDrink();
   }
 
-  if (
-    drink === null ||
-    drinkRating === null ||
-    currentUser === null ||
-    status === "loading"
-  ) {
-    return <div>LOADING</div>;
+  if (drink === null || drinkRating === null || status === "loading") {
+    return (
+      <Wrapper>
+        <LoadingDiv>
+          <RadialProgress
+            backgroundColour="#3b3a41"
+            backgroundTransparent
+            duration={10000}
+            fontRatio={4}
+            height={200}
+            ringBgColour="#B56576"
+            ringFgColour="#F5E0B7"
+            ringIntermediateColour="#8B807B"
+            ringThickness={0.2}
+            segmented={false}
+            showIntermediateProgress
+            startStep={0}
+            step={10}
+            steps={10}
+            text={function text(steps, proportion) {
+              return "".concat(Math.floor(100 * proportion), "%");
+            }}
+            width={100}
+          />
+        </LoadingDiv>
+      </Wrapper>
+    );
   }
 
   let total = 0;
@@ -171,108 +193,221 @@ const Drink = ({ currentUser }) => {
     drink.strMeasure15
   );
 
-  let favorite = currentUser.favorites.some((item) => {
-    return item.idDrink === drink.idDrink;
-  });
+  let favorite;
+  let rated;
 
-  console.log("favorite", favorite);
+  if (currentUser) {
+    favorite = currentUser.favorites.some((item) => {
+      return item.idDrink === drink.idDrink;
+    });
 
-  let rated = currentUser.rated.filter((item) => {
-    if (item.idDrink === drink.idDrink) {
-      return item;
-    }
-  });
+    rated = currentUser.rated.filter((item) => {
+      if (item.idDrink === drink.idDrink) {
+        return item;
+      }
+    });
+  }
 
   return (
-    <div>
+    <Wrapper>
       <DrinkBox>
         <Image alt={drink.strDrink} src={drink.strDrinkThumb} />
         <TextBox>
-          <span>{drink.strDrink}</span>
-          <span>Category:</span>
-          <span>{drink.strCategory}</span>
-          <span>{drink.strTags}</span>
-          <span>Ingredients:</span>
-          {ingredients.map((ingredient, i) => {
-            return (
-              <tr>
-                <Td>{ingredient}</Td>
-                <Td> {measurements[i]}</Td>
-              </tr>
-            );
-          })}
-          <span>Instructions:</span>
-          <span>{drink.strInstructions}</span>
-          <span>Avg Rating: {avgRounded}</span>
+          <h2 style={{ textDecoration: "underline" }}>{drink.strDrink}</h2>
+          <Sub>Category:</Sub>
+          <DetailDiv>
+            <span>{drink.strCategory}</span>
+          </DetailDiv>
+
+          <Sub>Ingredients:</Sub>
+          <DetailDiv>
+            {ingredients.map((ingredient, i) => {
+              return (
+                <div key={ingredient + i}>
+                  <tr>
+                    <Td>{ingredient}</Td>
+                    <Td> {measurements[i]}</Td>
+                  </tr>
+                </div>
+              );
+            })}
+          </DetailDiv>
+          <Sub>Instructions:</Sub>
+          <DetailDiv>
+            <span>{drink.strInstructions}</span>
+          </DetailDiv>
+          <DetailDiv>
+            <Sub>Avg Rating: </Sub>
+            <span style={{ color: "var(--color-red)" }}>{avgRounded}</span>
+          </DetailDiv>
           {isAuthenticated && (
             <>
-              {rated.length > 0 ? (
-                <div>You rated this drink a {rated[0].rating}!</div>
+              {rated !== undefined && rated.length > 0 ? (
+                <DetailDiv>
+                  <Italic>
+                    You rated this drink a{" "}
+                    <span style={{ color: "var(--color-red" }}>
+                      {rated[0].rating}
+                    </span>
+                    !
+                  </Italic>
+                </DetailDiv>
               ) : (
-                <form>
-                  <label>
-                    <input
-                      type="radio"
-                      name="rating"
-                      value={1}
-                      onChange={handleChange}
-                    />
-                    1
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="rating"
-                      value={2}
-                      onChange={handleChange}
-                    />
-                    2
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="rating"
-                      value={3}
-                      onChange={handleChange}
-                    />
-                    3
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="rating"
-                      value={4}
-                      onChange={handleChange}
-                    />
-                    4
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="rating"
-                      value={5}
-                      onChange={handleChange}
-                    />
-                    5
-                  </label>
-                  <button onClick={handleClick}>Rate!</button>
-                </form>
+                <DetailDiv>
+                  <Form>
+                    <Label>
+                      <Input
+                        type="radio"
+                        name="rating"
+                        value={1}
+                        onChange={handleChange}
+                      />
+                      <BiDrink
+                        style={
+                          selectedRating > 0
+                            ? { color: "var(--color-red)", fontSize: "20px" }
+                            : { fontSize: "20px" }
+                        }
+                      />
+                    </Label>
+                    <Label>
+                      <Input
+                        type="radio"
+                        name="rating"
+                        value={2}
+                        onChange={handleChange}
+                      />
+                      <BiDrink
+                        style={
+                          selectedRating > 1
+                            ? { color: "var(--color-red)", fontSize: "20px" }
+                            : { fontSize: "20px" }
+                        }
+                      />
+                    </Label>
+                    <Label>
+                      <Input
+                        type="radio"
+                        name="rating"
+                        value={3}
+                        onChange={handleChange}
+                      />
+                      <BiDrink
+                        style={
+                          selectedRating > 2
+                            ? { color: "var(--color-red)", fontSize: "20px" }
+                            : { fontSize: "20px" }
+                        }
+                      />
+                    </Label>
+                    <Label>
+                      <Input
+                        type="radio"
+                        name="rating"
+                        value={4}
+                        onChange={handleChange}
+                      />
+                      <BiDrink
+                        style={
+                          selectedRating > 3
+                            ? { color: "var(--color-red)", fontSize: "20px" }
+                            : { fontSize: "20px" }
+                        }
+                      />
+                    </Label>
+                    <Label>
+                      <Input
+                        type="radio"
+                        name="rating"
+                        value={5}
+                        onChange={handleChange}
+                      />
+                      <BiDrink
+                        style={
+                          selectedRating > 4
+                            ? { color: "var(--color-red)", fontSize: "20px" }
+                            : { fontSize: "20px" }
+                        }
+                      />
+                    </Label>
+                    <Button onClick={handleClick}>Rate!</Button>
+                  </Form>
+                </DetailDiv>
               )}
 
               {favorite ? (
-                <button onClick={removeFromFavorite}>
+                <Button onClick={removeFromFavorite}>
                   Remove from Favorites!
-                </button>
+                </Button>
               ) : (
-                <button onClick={addToFavorite}>Add to Favorites!</button>
+                <Button onClick={addToFavorite}>Add to Favorites!</Button>
               )}
             </>
           )}
         </TextBox>
       </DrinkBox>
-    </div>
+    </Wrapper>
   );
 };
+
+const Italic = styled.span`
+  font-style: italic;
+`;
+
+const Button = styled.button`
+  font-weight: bold;
+  border: 2px solid var(--color-almond);
+  background: var(--color-black);
+  color: var(--color-almond);
+  border-radius: 10px;
+  margin-left: 5px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  padding: 5px;
+
+  &:hover {
+    background: var(--color-almond);
+    color: var(--color-black);
+  }
+`;
+
+const Form = styled.form`
+  display: flex;
+  align-items: center;
+`;
+
+const Sub = styled.span`
+  font-weight: bold;
+`;
+
+const DetailDiv = styled.div`
+  padding: 0 15px;
+  margin-bottom: 15px;
+`;
+
+const Label = styled.label`
+  cursor: pointer;
+  margin-right: 10px;
+`;
+
+const Input = styled.input`
+  display: none;
+  cursor: pointer;
+`;
+
+const LoadingDiv = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const Wrapper = styled.div`
+  width: 100%;
+  height: 500px;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  background: var(--color-black);
+`;
 
 const Td = styled.td`
   padding-right: 5px;
@@ -281,15 +416,25 @@ const Td = styled.td`
 const TextBox = styled.div`
   display: flex;
   flex-direction: column;
+  margin-left: 30px;
+  border: 3px solid var(--color-grey);
+  border-radius: 30px;
+  width: 40%;
+  min-height: 100px;
+  overflow: scroll;
+  align-items: center;
 `;
 
 const DrinkBox = styled.div`
   display: flex;
+  margin-left: 30px;
   margin-bottom: 30px;
 `;
 
 const Image = styled.img`
-  width: 200px;
+  width: 50%;
+  border-radius: 30px;
+  border: 3px solid var(--color-almond);
 `;
 
 export default Drink;

@@ -1,13 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 
-import Results from "./Results";
-import Pagination from "./Pagination";
-
 const SearchUser = () => {
   const [username, setUsername] = useState();
-  const [viewResults, setViewResults] = useState(false);
   let history = useHistory();
 
   const handleChange = (ev) => {

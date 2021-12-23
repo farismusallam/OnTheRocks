@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { HiPlus } from "react-icons/hi";
 
 import Pagination from "./Pagination";
 import CreatedResults from "./CreatedResults";
@@ -50,28 +51,31 @@ const CreatedDrinks = ({ collections, currentUser, id }) => {
       .then((data) => {});
   };
 
-  console.log("onchange", name, whiskey, category, ingredients, instructions);
-
   return (
-    <div>
+    <Wrapper>
       {currentUser._id === id ? (
-        <button onClick={handleClick}>+ Create a drink!</button>
+        <Button onClick={handleClick}>
+          <ButtonDiv>
+            <HiPlus />
+            <Span>Create a drink!</Span>
+          </ButtonDiv>
+        </Button>
       ) : null}
       <div>
         {createDrink === true ? (
           <>
-            <form onSubmit={addCreatedDrink}>
-              <label for="name">Choose a Drink Name:</label>
-              <input
+            <Form onSubmit={addCreatedDrink}>
+              <Label for="name">Choose a Drink Name:</Label>
+              <Input
                 required="true"
                 id="name"
                 name="name"
                 type="text"
-                placeholder="Drink name"
+                placeholder="Drink name..."
                 onChange={handleName}
               />
-              <label for="category">Choose a category:</label>
-              <select
+              <Label for="category">Choose a category:</Label>
+              <Select
                 id="category"
                 name="category"
                 onChange={handleCategory}
@@ -89,9 +93,9 @@ const CreatedDrinks = ({ collections, currentUser, id }) => {
                 <option value="Punch/Party Drink">Punch/Party Drink</option>;
                 <option value="Beer">Beer</option>;
                 <option value="Soft Drink/Soda">Soft Drink/Soda</option>;
-              </select>
-              <label for="ingredients">Choose ingredients:</label>
-              <input
+              </Select>
+              <Label for="ingredients">Choose ingredients:</Label>
+              <Input
                 required="true"
                 id="ingredients"
                 name="ingredients"
@@ -99,8 +103,8 @@ const CreatedDrinks = ({ collections, currentUser, id }) => {
                 placeholder="Please separate ingredients by commas..."
                 onChange={handleIngredients}
               />
-              <label for="instructions">Input instructions:</label>
-              <input
+              <Label for="instructions">Input instructions:</Label>
+              <Input
                 required="true"
                 id="instructions"
                 name="instructions"
@@ -108,8 +112,8 @@ const CreatedDrinks = ({ collections, currentUser, id }) => {
                 placeholder="Please type out instructions..."
                 onChange={handleInstructions}
               />
-              <button type="submit">Submit Drink!</button>
-            </form>
+              <ButtonSubmit type="submit">Submit Drink!</ButtonSubmit>
+            </Form>
           </>
         ) : null}
       </div>
@@ -117,11 +121,86 @@ const CreatedDrinks = ({ collections, currentUser, id }) => {
         <Pagination
           data={collections}
           RenderComponent={CreatedResults}
-          dataLimit={25}
+          dataLimit={10}
         />
       </div>
-    </div>
+    </Wrapper>
   );
 };
+
+const ButtonSubmit = styled.button`
+  font-weight: bold;
+  border: 2px solid var(--color-almond);
+  background: var(--color-black);
+  color: var(--color-almond);
+  border-radius: 30px;
+  padding: 10px;
+  cursor: pointer;
+  margin-top: 10px;
+  width: 40%;
+  align-self: center;
+
+  &:hover {
+    background: var(--color-almond);
+    color: var(--color-black);
+  }
+`;
+
+const Label = styled.label`
+  margin-bottom: 5px;
+`;
+
+const Input = styled.input`
+  width: 500px;
+  margin-bottom: 10px;
+`;
+
+const Select = styled.select`
+  width: 500px;
+  margin-bottom: 10px;
+`;
+
+const Form = styled.form`
+  border: 2px solid var(--color-grey);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  margin: 15px;
+  border-radius: 20px;
+`;
+
+const Span = styled.span`
+  margin-left: 5px;
+`;
+
+const ButtonDiv = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Button = styled.div`
+  font-weight: bold;
+  border: 2px solid var(--color-red);
+  background: var(--color-black);
+  color: var(--color-red);
+  border-radius: 30px;
+  padding: 10px;
+  cursor: pointer;
+  margin-top: 10px;
+
+  &:hover {
+    background: var(--color-red);
+    color: var(--color-black);
+  }
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 500px;
+  background: var(--color-black);
+`;
 
 export default CreatedDrinks;

@@ -28,21 +28,27 @@ const Header = () => {
         </StyledLink>
 
         {!isAuthenticated && (
-          <Container>
-            <LoginButton />
-          </Container>
+          <SideWrap>
+            <Container>
+              <LoginButton />
+            </Container>
+          </SideWrap>
         )}
         {isAuthenticated && (
           <>
             <SideWrap>
               <Container>
-                <LogoutButton />
+                <StyledLink to={`/profile/${user.sub}`}>
+                  <MdPerson
+                    style={{ color: "var(--color-almond)", fontSize: "20px" }}
+                  />
+                  <Span
+                    style={{ textDecoration: "underline" }}
+                  >{`Welcome, ${user.nickname}!`}</Span>
+                </StyledLink>
               </Container>
               <Container>
-                <StyledLink to={`/profile/${user.sub}`}>
-                  <MdPerson style={{ color: "var(--color-almond)" }} />
-                  <Span>{`Welcome ${user.nickname}!`}</Span>
-                </StyledLink>
+                <LogoutButton />
               </Container>
             </SideWrap>
           </>
@@ -54,8 +60,9 @@ const Header = () => {
 
 const SideWrap = styled.div`
   display: flex;
-  align-items: center;
-  margin: 30px;
+  align-items: flex-start;
+  margin-right: 10px;
+  margin-top: 5px;
 `;
 
 const Blank = styled.div`
@@ -83,6 +90,7 @@ const IMG = styled.img`
 
 const Span = styled.span`
   color: var(--color-almond);
+  margin-left: 5px;
 `;
 
 const Wrapper = styled.header`
@@ -104,7 +112,7 @@ const H1 = styled.h1`
   font-family: "Lobster", cursive;
   font-size: 70px;
   font-weight: bold;
-  right: 15px;
+  right: 10px;
 `;
 
 const Container = styled.div`

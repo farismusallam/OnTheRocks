@@ -19,13 +19,11 @@ import SearchUserResults from "./SearchUserResults";
 import SearchByIngredients from "./SearchByIngredients";
 
 const App = () => {
-  const { user, isAuthenticated, isLoading } = useAuth0();
+  const { user } = useAuth0();
   const [currentUser, setCurrentUser] = useState(null);
   const [status, setStatus] = useState("idle");
   const [hasUser, setHasUser] = useState(false);
   const [users, setUsers] = useState([]);
-
-  console.log("user", user);
 
   useEffect(() => {
     if (user) {
@@ -130,6 +128,7 @@ const Wrapper = styled.div`
   display: flex;
   background-color: var(--color-black);
   height: 100%;
+  border-right: 3px solid var(--color-grey);
 `;
 
 export default App;
